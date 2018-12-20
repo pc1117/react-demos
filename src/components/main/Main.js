@@ -97,7 +97,7 @@ export class Main extends Component {
         this.setState({
             loading: true
         }, () => {
-            fetch("http://101.201.114.116:10200/api/gw/api/foundation/api/foundation/residentlist?currentPage=1&length=10&name=&personType=1").then(res => res.json()).then(res => {
+            fetch("http://47.9.114.116:10200/api/gw/api/foundation/api/foundation/residentlist?currentPage=1&length=10&name=&personType=1").then(res => res.json()).then(res => {
                 that.setState({
                     loading: false,
                     lists: res.Content.pagelist
