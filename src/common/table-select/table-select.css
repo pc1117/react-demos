@@ -1,0 +1,39 @@
+.table-select {
+    position: relative;
+}
+
+.drop-menus {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    top: 36px;
+    min-height: 100px;
+    padding: 0 15px;
+    background: #fff;
+    border: solid 1px #ddd;
+    z-index: 99999;
+    border-radius: 3px;
+    box-shadow: 0 -3px -3px #333;
+}
+
+.ts-title {
+    border-bottom: solid 1px #ddd;
+    font: 600 14px/36px "微软雅黑";
+    margin: 0 -15px;
+    padding: 0 10px;
+}
+
+.ts-search {
+    text-align: right;
+    padding:5px 10px;
+    margin: 0 -15px;
+}
+
+.ts-search .ant-input {
+    width: 200px;
+}
+
+.ts-container {
+    margin: 0 -15px;
+    padding: 10px;
+}

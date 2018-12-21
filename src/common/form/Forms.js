@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Form, Input } from 'antd';
+import { Form } from 'antd';
 import FormsItem from './FormsItem';
 
 class Forms extends Component {

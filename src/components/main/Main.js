@@ -39,15 +39,16 @@ export class Main extends Component {
         title: '操作',
         render: (text, record, index) => (
             <div>
-                <a href="javascript:;" onClick={this.editItem.bind(this, record)}>编辑</a>
+                <a href="javascript:void(0);" onClick={this.editItem.bind(this, record)}>编辑</a>
                 <Divider type="vertical" />
-                <a href="javascript:;" onClick={this.deleteItem.bind(this, record)}>删除</a>
+                <a href="javascript:void(0);" onClick={this.deleteItem.bind(this, record)}>删除</a>
             </div>
         )
     }];
 
     /* 表单项目列 */
     fieldsList = [
+        { name: "Corporation", displayName: "公司", editor: "table-select", value: "", originValue: "", rules: [{ required: false, message: "请选择公司" }] },
         { name: "Name", displayName: "姓名", editor: "normal", value: "", originValue: "", rules: [{ required: true, message: "请输入姓名" }] },
         { name: "HouseGradePathName", displayName: "楼栋单元", editor: "select", value: "", originValue: 1, opts: [{ Id: 1, Name: "一单元" }, { Id: 2, Name: "二单元" }] },
         { name: "Sex", displayName: "性别", opts: [{ Id: 1, Name: "男" }, { Id: 2, Name: "女" }], editor: "radio", value: "", originValue: 1 },
@@ -58,12 +59,6 @@ export class Main extends Component {
     /* 钩子函数 */
     componentDidMount() {
         this.fetchData();
-        this.getTitle();
-    }
-
-    /* 动态获取标题 */
-    getTitle = () => {
-        console.log(this.props.title);
     }
 
     /* 新增 */
@@ -97,7 +92,7 @@ export class Main extends Component {
         this.setState({
             loading: true
         }, () => {
-            fetch("http://101.20.114.116:10200/api/gw/api/foundation/api/foundation/residentlist?currentPage=1&length=10&name=&personType=1").then(res => res.json()).then(res => {
+            fetch("http://101.201.114.116:10200/api/gw/api/foundation/api/foundation/residentlist?currentPage=1&length=10&name=&personType=1").then(res => res.json()).then(res => {
                 that.setState({
                     loading: false,
                     lists: res.Content.pagelist

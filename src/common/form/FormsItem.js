@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Input, Select, Radio, Checkbox } from 'antd';
+import TableSelect from '../table-select/TableSelect';
 
 class FormsItem extends Component {
     render() {
@@ -32,14 +33,13 @@ class FormsItem extends Component {
                         <Checkbox.Group value={value} onChange={onChange}>
                             {
                                 item.opts.map((item, index) => <Checkbox key={index} value={item.Id}>{item.Name}</Checkbox>)
-
                             }
                         </Checkbox.Group>
                     )
-                case "normal":
-                    return <Input />
-                case "normal":
-                    return <Input />
+                case "table-select":
+                    return <TableSelect item={item} value={value} onChange={onChange} />
+                default:
+                    return <Input value={value} onChange={onChange} />
             }
         })(item)
     }
