@@ -23,10 +23,30 @@
     padding: 0 10px;
 }
 
+.ts-title::after {
+    display: table;
+    content: "";
+    clear: both;
+}
+
+.ts-title .ts-close {
+    float: right;
+    cursor: pointer;
+    width: 36px;
+    text-align: center;
+    display: block;
+    margin-right: -10px;
+}
+
 .ts-search {
     text-align: right;
-    padding:5px 10px;
+    padding: 5px 10px;
     margin: 0 -15px;
+}
+
+.ts-search .ant-input {
+    height: 26px;
+    font-size: 12px;
 }
 
 .ts-search .ant-input {
@@ -34,6 +54,9 @@
 }
 
 .ts-container {
-    margin: 0 -15px;
-    padding: 10px;
+    margin: 0 -16px;
+}
+
+.ts-container .ant-table .ant-table-thead th, .ts-container .ant-table .ant-table-tbody td {
+    padding: 7px;
 }

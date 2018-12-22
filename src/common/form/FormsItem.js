@@ -3,9 +3,10 @@ import { Input, Select, Radio, Checkbox } from 'antd';
 import TableSelect from '../table-select/TableSelect';
 
 class FormsItem extends Component {
-    render() {
 
+    render() {
         const { item, value, onChange } = this.props;
+        
         return ((item) => {
             switch (item.editor) {
                 case "normal":
@@ -37,7 +38,7 @@ class FormsItem extends Component {
                         </Checkbox.Group>
                     )
                 case "table-select":
-                    return <TableSelect item={item} value={value} onChange={onChange} />
+                    return <TableSelect item={item} value={value} onChange={onChange}  />
                 default:
                     return <Input value={value} onChange={onChange} />
             }

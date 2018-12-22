@@ -3,6 +3,7 @@ import { Spin, Table, Row, Divider, Icon, Button, message } from 'antd';
 import './main.css';
 import Modals from '../../common/modal/Modals';
 import publics from './../../service/public';
+import http from '../../service/http';
 
 export class Main extends Component {
 
@@ -47,14 +48,26 @@ export class Main extends Component {
     }];
 
     /* 表单项目列 */
-    fieldsList = [
-        { name: "Corporation", displayName: "公司", editor: "table-select", value: "", originValue: "", rules: [{ required: false, message: "请选择公司" }] },
-        { name: "Name", displayName: "姓名", editor: "normal", value: "", originValue: "", rules: [{ required: true, message: "请输入姓名" }] },
-        { name: "HouseGradePathName", displayName: "楼栋单元", editor: "select", value: "", originValue: 1, opts: [{ Id: 1, Name: "一单元" }, { Id: 2, Name: "二单元" }] },
-        { name: "Sex", displayName: "性别", opts: [{ Id: 1, Name: "男" }, { Id: 2, Name: "女" }], editor: "radio", value: "", originValue: 1 },
-        { name: "Aihao", displayName: "其他", opts: [{ Id: 1, Name: "男" }, { Id: 2, Name: "女" }], editor: "checkbox", value: "", originValue: [1] },
-        { name: "Describe", displayName: "描述", editor: "texarea", value: "", originValue: "", rules: [{ required: true, message: "请输入描述" }] },
-    ];
+    fieldsList = [{
+        name: "Corporation", displayName: "公司", editor: "table-select", value: "", originValue: "",
+        tableOption: {
+            method: "get",
+            url: "http://101.201.114.116:10200/api/gw/api/foundation/api/foundation/courtyardlist",
+            params: {
+                buildingid: 603, courtyardid: 561, currentPage: 1, length: 10, name: "", unitid: 659
+            },
+            columns: this.columns,
+        },
+        rules: [{
+            required: false,
+            message: "请选择公司"
+        }]
+    },
+    { name: "Name", displayName: "姓名", editor: "normal", value: "", originValue: "", rules: [{ required: true, message: "请输入姓名" }] },
+    { name: "HouseGradePathName", displayName: "楼栋单元", editor: "select", value: "", originValue: 1, opts: [{ Id: 1, Name: "一单元" }, { Id: 2, Name: "二单元" }] },
+    { name: "Sex", displayName: "性别", opts: [{ Id: 1, Name: "男" }, { Id: 2, Name: "女" }], editor: "radio", value: "", originValue: 1 },
+    { name: "Aihao", displayName: "其他", opts: [{ Id: 1, Name: "男" }, { Id: 2, Name: "女" }], editor: "checkbox", value: "", originValue: [1], rules: [{ required: true, message: "请选择其他" }] },
+    { name: "Phone", displayName: "手机", editor: "normal", value: "", originValue: "", rules: [{ required: false, message: "请输入手机" }] }];
 
     /* 钩子函数 */
     componentDidMount() {
@@ -88,17 +101,32 @@ export class Main extends Component {
 
     /* 获取数据 */
     fetchData = () => {
-        const that = this;
+        let that = this;
         this.setState({
             loading: true
         }, () => {
-            fetch("http://101.201.114.116:10200/api/gw/api/foundation/api/foundation/residentlist?currentPage=1&length=10&name=&personType=1").then(res => res.json()).then(res => {
-                that.setState({
-                    loading: false,
-                    lists: res.Content.pagelist
-                });
+            http.request({
+                method: "get",
+                url: "http://101.201.114.116:10200/api/gw/api/foundation/api/foundation/residentlist",
+                params: {
+                    currentPage: 1,
+                    length: 10,
+                    name: "",
+                    personType: 1
+                },
+            }).then(res => {
+                if (res.code === 0) {
+                    let dataSource = res.data.pagelist;
+                    that.setState({
+                        loading: false,
+                        lists: dataSource
+                    });
+                } else {
+                    message.error(res.message);
+                    that.setState({ loading: false });
+                }
             }).catch(err => {
-                message(err);
+                message(err.message);
                 this.setState({ loading: false });
             })
         });
