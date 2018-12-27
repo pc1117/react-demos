@@ -52,9 +52,14 @@ export class Main extends Component {
         name: "Corporation", displayName: "公司", editor: "table-select", value: "", originValue: "",
         tableOption: {
             method: "get",
-            url: "http://10.201.114.116:10200/api/gw/api/foundation/api/foundation/courtyardlist",
+            url: "http://101.201.114.116:10200/api/gw/api/foundation/api/foundation/courtyardlist",
             params: {
-                buildingid: 603, courtyardid: 561, currentPage: 1, length: 10, name: "", unitid: 659
+                buildingid: 603,
+                courtyardid: 561,
+                currentPage: 1,
+                length: 10,
+                name: "",
+                unitid: 659
             },
             columns: this.columns,
         },
