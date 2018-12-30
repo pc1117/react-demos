@@ -9,17 +9,27 @@ class TableSelect extends Component {
         show: false
     }
 
+    /* 关闭弹出窗口 */
+    closeDropMenu = () => {
+        this.setState({
+            show: false
+        })
+    }
+
+    /* 点击切换下拉框显示状态 */
+    myOnClick = () => {
+        this.setState(preState => ({ show: !preState.show }));
+    }
+
     render() {
         const { value, onChange, item } = this.props;
+        const { closeDropMenu, myOnClick } = this;
         const { show } = this.state;
-        const myOnClick = () => {
-            this.setState(preState => ({ show: !preState.show }));
-        }
         return (
             <div className="table-select">
                 <Input value={value} onChange={onChange} readOnly onClick={myOnClick} />
                 {
-                    show ? <TableSelectDropMenu item={item} tableOnChange={onChange} /> : ""
+                    show ? <TableSelectDropMenu item={item} tableOnChange={onChange} closeDropMenu={closeDropMenu} /> : ""
                 }
 
             </div>
