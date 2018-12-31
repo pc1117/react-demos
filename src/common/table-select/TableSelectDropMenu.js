@@ -11,8 +11,9 @@ class TableSelectDropMenu extends Component {
     state = {
         loading: false,
         searchValue: "",
-        dataSource: [],
+        dataSource: [{}, {}],
         page: {
+            size: "small",
             pageSize: 10,
             total: 0,
             current: 1
@@ -21,7 +22,6 @@ class TableSelectDropMenu extends Component {
 
     /* 数据请求 */
     fetchData = () => {
-        console.log("fetchData");
         let { searchValue } = this.state;
         let that = this;
         let { url = "", params = {}, data = null, method = "get", page = {} } = this.props.item.tableOption;
@@ -29,47 +29,45 @@ class TableSelectDropMenu extends Component {
         params["name"] = searchValue;
         params["currentPage"] = page.current || defaultPage.current;
         params["length"] = page.pageSize || defaultPage.pageSize;
-        this.setState({ loading: true });
-        http.request({
-            url: url,
-            params: params,
-            data: data,
-            method: method
-        }).then(res => {
-            if (res.code === 0) {
-                let dataSource = res.data.pagelist;
-                let { currentPage, length, totleNum } = res.data.paginator;
-                that.setState({
-                    dataSource,
-                    loading: false,
-                    page: {
-                        current: currentPage,
-                        pageSize: length,
-                        total: totleNum
-                    }
-                });
-            } else {
-                message.error(res.message);
-                that.setState({ loading: false });
-            }
+        that.setState({ loading: true }, () => {
+            http.request({
+                url: url,
+                params: params,
+                data: data,
+                method: method
+            }).then(res => {
+                if (res.code === 0) {
+                    let dataSource = res.data.pagelist;
+                    dataSource.forEach((v, n) => {
+                        v.key = n
+                    });
+                    let { currentPage, length, totleNum } = res.data.paginator;
+                    that.setState({
+                        dataSource,
+                        loading: false,
+                        page: {
+                            size: "small",
+                            current: currentPage,
+                            pageSize: length,
+                            total: totleNum
+                        }
+                    });
+                } else {
+                    message.error(res.message);
+                    that.setState({ loading: false });
+                }
 
-        }).catch(err => {
-            message.error(err.message);
-            that.setState({ loading: false });
+            }).catch(err => {
+                message.error(err.message);
+                that.setState({ loading: false });
+            });
         });
+
     }
 
     /* 钩子函数 */
-    componentDidMount() {
-        //this.fetchData();
-    }
-
-    componentWillUpdate() {
-        return false;
-    }
-
-    componentDidUpdate() {
-        return false;
+    componentWillMount() {
+        this.fetchData();
     }
 
     /* 搜索框值双向绑定 */
@@ -81,9 +79,14 @@ class TableSelectDropMenu extends Component {
 
     /* 表格行事件 */
     onRow = (record) => {
-        const { tableOnChange } = this.props;
+        const { tableOnChange, form, closeDropMenu } = this.props;
         return {
-            onClick: tableOnChange(record),
+            onClick: () => {
+                let { renderName, callback } = this.props.item.tableOption;
+                tableOnChange(record[renderName]);
+                closeDropMenu();
+                callback && callback(form, record);
+            },
             onMouseEnter: () => { },
         };
     }
@@ -93,7 +96,6 @@ class TableSelectDropMenu extends Component {
         const { columns } = item.tableOption;
         const { loading, dataSource, searchValue, page } = this.state;
         const { searchOnChange, onRow, fetchData } = this;
-        console.log("render has do");
         return (
             <div className="drop-menus">
                 <Spin spinning={loading}>
@@ -105,7 +107,7 @@ class TableSelectDropMenu extends Component {
                         <Search value={searchValue} onSearch={fetchData} onChange={searchOnChange} placeholder="请输入关键字进行搜索" />
                     </div>
                     <div className="ts-container">
-                        <Table pagination={page} rowKey="Id" columns={columns} dataSource={dataSource} bordered={true} onRow={onRow}></Table>
+                        <Table columns={columns} dataSource={dataSource} rowKey={"Id"} size="small" pagination={page} bordered={true} onRow={onRow}></Table>
                     </div>
                 </Spin>
             </div>

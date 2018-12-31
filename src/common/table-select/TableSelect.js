@@ -22,14 +22,14 @@ class TableSelect extends Component {
     }
 
     render() {
-        const { value, onChange, item } = this.props;
+        const { value, onChange, item, form } = this.props;
         const { closeDropMenu, myOnClick } = this;
         const { show } = this.state;
         return (
             <div className="table-select">
                 <Input value={value} onChange={onChange} readOnly onClick={myOnClick} />
                 {
-                    show ? <TableSelectDropMenu item={item} tableOnChange={onChange} closeDropMenu={closeDropMenu} /> : ""
+                    show ? <TableSelectDropMenu item={item} form={form} tableOnChange={onChange} closeDropMenu={closeDropMenu} /> : ""
                 }
 
             </div>

@@ -15,7 +15,7 @@ class Forms extends Component {
                         return (
                             <FormItem {...formItemLayout} label={item.displayName} key={index}>
                                 {
-                                    getFieldDecorator(item.name, { initialValue: item.value, rules: item.rules, validateFirst: true })(<FormsItem item={item} />)
+                                    getFieldDecorator(item.name, { initialValue: item.value, rules: item.rules, validateFirst: true })(<FormsItem item={item} form={form} />)
                                 }
                             </FormItem>
                         )

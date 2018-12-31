@@ -61,7 +61,20 @@ export class Main extends Component {
                 name: "",
                 unitid: 659
             },
-            columns: this.columns,
+            columns: [{
+                dataIndex: 'Name',
+                key: 'Name',
+                title: '姓名',
+            }, {
+                dataIndex: 'Id',
+                key: 'Id',
+                title: 'ID',
+            }],
+            renderName: "Name",
+            renderValue: "Id",
+            callback: (form, record) => {
+                console.log(form, record);
+            }
         },
         rules: [{
             required: false,
@@ -112,7 +125,7 @@ export class Main extends Component {
         }, () => {
             http.request({
                 method: "get",
-                url: "http://10.201.114.116:10200/api/gw/api/foundation/api/foundation/residentlist",
+                url: "http://101.201.114.116:10200/api/gw/api/foundation/api/foundation/residentlist",
                 params: {
                     currentPage: 1,
                     length: 10,

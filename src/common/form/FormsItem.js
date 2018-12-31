@@ -5,8 +5,8 @@ import TableSelect from '../table-select/TableSelect';
 class FormsItem extends Component {
 
     render() {
-        const { item, value, onChange } = this.props;
-        
+        const { item, value, onChange, form } = this.props;
+
         return ((item) => {
             switch (item.editor) {
                 case "normal":
@@ -38,7 +38,7 @@ class FormsItem extends Component {
                         </Checkbox.Group>
                     )
                 case "table-select":
-                    return <TableSelect item={item} value={value} onChange={onChange}  />
+                    return <TableSelect item={item} form={form} value={value} onChange={onChange} />
                 default:
                     return <Input value={value} onChange={onChange} />
             }
