@@ -14,14 +14,14 @@ class TableSelectDropMenu extends Component {
         dataSource: [],
         page: {
             size: "small",
-            pageSize: 10,
+            pageSize: 5,
             total: 0,
             current: 1
         }
     };
 
     /* 数据请求 */
-    fetchData = () => {
+    fetchData = (_params = {}) => {
         let { searchValue } = this.state;
         let that = this;
         let { url = "", params = {}, data = null, method = "get", page = {} } = this.props.item.tableOption;
@@ -29,6 +29,7 @@ class TableSelectDropMenu extends Component {
         params["name"] = searchValue;
         params["currentPage"] = page.current || defaultPage.current;
         params["length"] = page.pageSize || defaultPage.pageSize;
+        params = Object.assign(params, _params);
         that.setState({ loading: true }, () => {
             http.request({
                 url: url,
@@ -88,11 +89,29 @@ class TableSelectDropMenu extends Component {
         };
     }
 
+    /* 表格翻页事件 */
+    onChange = (currentPage, length) => {
+        let params = {
+            length: length,
+            currentPage: currentPage
+        }
+        this.fetchData(params);
+    }
+
+    /* 分页变化事件 */
+    onShowSizeChange = (currentPage, length) => {
+        let params = {
+            length: length,
+            currentPage: currentPage
+        };
+        this.fetchData(params);
+    }
+
     render() {
         const { item, closeDropMenu } = this.props;
-        const { columns, scroll = { } } = item.tableOption;
+        const { columns, scroll = {} } = item.tableOption;
         const { loading, dataSource, searchValue, page } = this.state;
-        const { searchOnChange, onRow, fetchData } = this;
+        const { searchOnChange, onRow, fetchData, onShowSizeChange, onChange } = this;
         console.log("render has do");
         return (
             <div className="drop-menus">
@@ -105,7 +124,13 @@ class TableSelectDropMenu extends Component {
                         <Search value={searchValue} onSearch={fetchData} onChange={searchOnChange} placeholder="请输入关键字进行搜索" />
                     </div>
                     <div className="ts-container">
-                        <Table scroll={scroll} columns={columns} dataSource={dataSource} rowKey="Id" size="small" pagination={page} bordered={true} onRow={onRow}></Table>
+                        <Table scroll={scroll} columns={columns} dataSource={dataSource} rowKey="Id" size="small" bordered={true} onRow={onRow}
+                            pagination={{
+                                ...page,
+                                onShowSizeChange: onShowSizeChange,
+                                onChange: onChange,
+                                showSizeChanger: true,
+                            }} ></Table>
                     </div>
                 </Spin>
             </div>

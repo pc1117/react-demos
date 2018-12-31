@@ -17,7 +17,8 @@ export class Main extends Component {
         okText: "确定",
         cancelText: "取消",
         maskClosable: false,
-        centered: true
+        centered: true,
+        modalsLoading: false
     };
 
     /* 表单列 */
@@ -77,7 +78,7 @@ export class Main extends Component {
             }
         },
         rules: [{
-            required: false,
+            required: true,
             message: "请选择公司"
         }]
     },
@@ -97,18 +98,18 @@ export class Main extends Component {
         publics.initFormList(this.fieldsList);
         this.setState({
             create: true,
-            visible: true
+            visible: true,
+            modalsLoading: false
         });
     };
 
     /* 编辑行 */
     editItem(item, $event) {
-        this.setState({
-            create: false
-        });
         publics.bindFormData(item, this.fieldsList);
         this.setState({
-            visible: true
+            create: false,
+            visible: true,
+            modalsLoading: false
         });
     };
 
@@ -152,24 +153,40 @@ export class Main extends Component {
 
     /* 弹框ok事件 */
     onOk = (form, $event) => {
+        let that = this;
+        let { create } = this.state;
         $event.preventDefault();
         form.validateFields((errors, values) => {
-            console.log(values);
+            let isNull = false;
+            for (let v in errors) {
+                if (errors[v].errors) {
+                    isNull = true;
+                }
+            }
+            if (isNull) return;
+            this.setState({
+                modalsLoading: true
+            });
+            setTimeout(() => {
+                message.success((create ? "新增" : "修改") + "操作成功!");
+                that.setState({
+                    visible: false,
+                    modalsLoading: true
+                });
+            }, 500)
         });
-        /*  this.setState({
-             visible: false
-         }); */
     };
 
     /* 弹框cancel事件 */
     onCancel = () => {
         this.setState({
-            visible: false
+            visible: false,
+            modalsLoading: false
         });
     };
 
     render() {
-        let { loading, lists, title, visible, destroyOnClose, cancelText, okText, maskClosable, centered, create } = this.state;
+        let { loading, lists, title, visible, destroyOnClose, cancelText, okText, maskClosable, centered, create, modalsLoading } = this.state;
         let { columns, fetchData, onOk, onCancel, createOne, fieldsList } = this;
         let modal = { title: (create ? "新增" : "修改") + title, visible, destroyOnClose, cancelText, okText, centered, onOk, onCancel, maskClosable }
         let formItemLayout = {
@@ -190,7 +207,7 @@ export class Main extends Component {
                     <Button type="default" onClick={createOne}><Icon type="new-file" /> 新增</Button>
                 </Row>
                 <Table dataSource={lists} bordered={true} rowKey={"Id"} columns={columns} />
-                <Modals modal={modal} fieldsList={fieldsList} formItemLayout={formItemLayout} />
+                <Modals modal={modal} modalsLoading={modalsLoading} fieldsList={fieldsList} formItemLayout={formItemLayout} />
             </Spin>
         )
     }
