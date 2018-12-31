@@ -57,6 +57,6 @@
     margin: 0 -16px;
 }
 
-.ts-container .ant-table .ant-table-thead th, .ts-container .ant-table .ant-table-tbody td {
-    padding: 7px;
+.ts-container .ant-table-small>.ant-table-content>.ant-table-body {
+    margin: 0;
 }

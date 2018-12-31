@@ -11,7 +11,7 @@ class TableSelectDropMenu extends Component {
     state = {
         loading: false,
         searchValue: "",
-        dataSource: [{}, {}],
+        dataSource: [],
         page: {
             size: "small",
             pageSize: 10,
@@ -38,9 +38,6 @@ class TableSelectDropMenu extends Component {
             }).then(res => {
                 if (res.code === 0) {
                     let dataSource = res.data.pagelist;
-                    dataSource.forEach((v, n) => {
-                        v.key = n
-                    });
                     let { currentPage, length, totleNum } = res.data.paginator;
                     that.setState({
                         dataSource,
@@ -93,9 +90,10 @@ class TableSelectDropMenu extends Component {
 
     render() {
         const { item, closeDropMenu } = this.props;
-        const { columns } = item.tableOption;
+        const { columns, scroll = { } } = item.tableOption;
         const { loading, dataSource, searchValue, page } = this.state;
         const { searchOnChange, onRow, fetchData } = this;
+        console.log("render has do");
         return (
             <div className="drop-menus">
                 <Spin spinning={loading}>
@@ -107,7 +105,7 @@ class TableSelectDropMenu extends Component {
                         <Search value={searchValue} onSearch={fetchData} onChange={searchOnChange} placeholder="请输入关键字进行搜索" />
                     </div>
                     <div className="ts-container">
-                        <Table columns={columns} dataSource={dataSource} rowKey={"Id"} size="small" pagination={page} bordered={true} onRow={onRow}></Table>
+                        <Table scroll={scroll} columns={columns} dataSource={dataSource} rowKey="Id" size="small" pagination={page} bordered={true} onRow={onRow}></Table>
                     </div>
                 </Spin>
             </div>
