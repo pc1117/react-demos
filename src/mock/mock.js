@@ -4,7 +4,7 @@ const mainDataSource = () => {
     let pagelist = [];
     for (let i = 0; i < 10; i++) {
         pagelist.push(Mock.mock({
-            'Id|+1': 1,
+            'Id': i + 1,
             'Email': '@EMAIL',
             "Name": "@NAME",
             "Sex|1-2": 1,
@@ -34,7 +34,7 @@ const conpanyDataSource = () => {
     let pagelist = [];
     for (let i = 0; i < 5; i++) {
         pagelist.push(Mock.mock({
-            'Id|+1': 1,
+            'Id': i + 1,
             "Name": "@CITY"
         }))
     }
