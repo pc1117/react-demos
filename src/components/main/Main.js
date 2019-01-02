@@ -50,7 +50,7 @@ export class Main extends Component {
 
     /* 表单项目列 */
     fieldsList = [{
-        name: "Corporation", displayName: "公司", editor: "table-select", value: "", originValue: "",
+        name: "Corporation", displayName: "城市", editor: "table-select", value: "", originValue: "",
         tableOption: {
             method: "get",
             url: "/api/companylist",
@@ -72,7 +72,7 @@ export class Main extends Component {
         },
         rules: [{
             required: true,
-            message: "请选择公司"
+            message: "请选择城市"
         }]
     },
     { name: "Name", displayName: "姓名", editor: "normal", value: "", originValue: "", rules: [{ required: true, message: "请输入姓名" }] },
