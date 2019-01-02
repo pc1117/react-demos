@@ -54,14 +54,7 @@ export class Main extends Component {
         tableOption: {
             method: "get",
             url: "/api/companylist",
-            params: {
-                buildingid: 603,
-                courtyardid: 561,
-                currentPage: 1,
-                length: 10,
-                name: "",
-                unitid: 659
-            },
+            params: {},
             columns: [{
                 dataIndex: 'Name',
                 key: 'Name',
@@ -127,12 +120,7 @@ export class Main extends Component {
             http.request({
                 method: "get",
                 url: "/api/courtyardlist",
-                params: {
-                    currentPage: 1,
-                    length: 10,
-                    name: "",
-                    personType: 1
-                },
+                params: {},
             }).then(res => {
                 if (res.code === 0) {
                     let dataSource = res.data.pagelist;

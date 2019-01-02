@@ -56,5 +56,5 @@ const conpanyDataSource = () => {
         "length": 10
     }
 }
-Mock.mock("/api/courtyardlist?currentPage=1&length=10&name=&personType=1", 'get', mainDataSource);
-Mock.mock("/api/companylist?buildingid=603&courtyardid=561&currentPage=1&length=5&name=&unitid=659", 'get', conpanyDataSource);
+Mock.mock("/api/courtyardlist", 'get', mainDataSource);
+Mock.mock("/api/companylist?name=&currentPage=1&length=5", 'get', conpanyDataSource);
