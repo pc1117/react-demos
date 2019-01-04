@@ -6,7 +6,6 @@ class FormsItem extends Component {
 
     render() {
         const { item, value, onChange, form } = this.props;
-
         return ((item) => {
             switch (item.editor) {
                 case "normal":

@@ -32,9 +32,9 @@ export class Main extends Component {
         title: '性别',
         render: (text) => text === 1 ? "男" : "女"
     }, {
-        dataIndex: 'HouseGradePathName',
-        key: 'HouseGradePathName',
-        title: '楼栋单元',
+        dataIndex: 'City',
+        key: 'City',
+        title: '城市',
     }, {
         dataIndex: 'Action',
         key: 'Action',
@@ -78,7 +78,7 @@ export class Main extends Component {
     { name: "Name", displayName: "姓名", editor: "normal", value: "", originValue: "王小媛", rules: [{ required: true, message: "请输入姓名" }] },
     { name: "HouseGradePathName", displayName: "楼栋单元", editor: "select", value: "", originValue: 1, opts: [{ Id: 1, Name: "一单元" }, { Id: 2, Name: "二单元" }] },
     { name: "Sex", displayName: "性别", opts: [{ Id: 1, Name: "男" }, { Id: 2, Name: "女" }], editor: "radio", value: "", originValue: 2 },
-    { name: "Aihao", displayName: "名族", opts: [{ Id: 1, Name: "汉族" }, { Id: 2, Name: "其他少数民族" }], editor: "checkbox", value: "", originValue: [1], rules: [{ required: true, message: "请选择其他" }] },
+    { name: "Aihao", displayName: "民族", opts: [{ Id: 1, Name: "汉族" }, { Id: 2, Name: "其他少数民族" }], editor: "checkbox", value: "", originValue: [1], rules: [{ required: true, message: "请选择民族" }] },
     { name: "Phone", displayName: "手机", editor: "normal", value: "", originValue: "", rules: [{ required: false, message: "请输入手机" }] }];
 
     /* 钩子函数 */
@@ -108,7 +108,7 @@ export class Main extends Component {
 
     /* 删除行 */
     deleteItem(item, $event) {
-        console.log($event);
+        console.log(item);
     };
 
     /* 获取数据 */

@@ -8,7 +8,7 @@ const mainDataSource = () => {
             'Email': '@EMAIL',
             "Name": "@NAME",
             "Sex|1-2": 1,
-            "HouseGradePathName": "@CITY"
+            "City": "@CITY"
         }))
     }
     return {
