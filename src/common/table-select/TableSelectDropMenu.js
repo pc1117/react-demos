@@ -130,7 +130,8 @@ class TableSelectDropMenu extends Component {
                                 onShowSizeChange: onShowSizeChange,
                                 onChange: onChange,
                                 showSizeChanger: true,
-                            }} ></Table>
+                            }} >
+                        </Table>
                     </div>
                 </Spin>
             </div>
