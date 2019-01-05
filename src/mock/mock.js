@@ -18,7 +18,9 @@ const mainDataSource = {
                 'Id|+1': 1,
                 'Email': '@EMAIL',
                 "Name": "@NAME",
+                "Unit|1-2": 1,
                 "Sex|1-2": 1,
+                "Nation|1-2": 1,
                 "City": "@CITY"
             }]
         })
