@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Input, Select, Radio, Checkbox } from 'antd';
 import TableSelect from '../table-select/TableSelect';
+import { InputNumber } from 'antd';
 
 class FormsItem extends Component {
 
@@ -10,6 +11,8 @@ class FormsItem extends Component {
             switch (item.editor) {
                 case "normal":
                     return <Input value={value} onChange={onChange} />
+                case "number":
+                    return <InputNumber value={value} onChange={onChange} max={item.range ? item.range[1] : ""} min={item.range ? item.range[0] : ""} />
                 case "select":
                     return (
                         <Select value={value} onChange={onChange}>

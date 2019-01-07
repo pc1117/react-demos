@@ -89,7 +89,9 @@ export class Main extends Component {
     { name: "Unit", displayName: "楼栋单元", editor: "select", value: "", originValue: 1, opts: [{ Id: 1, Name: "一单元" }, { Id: 2, Name: "二单元" }] },
     { name: "Sex", displayName: "性别", opts: [{ Id: 1, Name: "男" }, { Id: 2, Name: "女" }], editor: "radio", value: "", originValue: 2 },
     { name: "Nation", displayName: "民族", opts: [{ Id: 1, Name: "汉族" }, { Id: 2, Name: "少数民族" }], editor: "radio", value: "", originValue: 1, rules: [{ required: true, message: "请选择民族" }] },
-    { name: "Phone", displayName: "手机", editor: "normal", value: "", originValue: "", rules: [{ required: false, message: "请输入手机" }] }];
+    { name: "Phone", displayName: "手机", editor: "normal", value: "", originValue: "", rules: [{ required: false, message: "请输入手机" }] },
+    //{ name: "Percent", displayName: "占比", editor: "number", value: "", originValue: 1, range: [0, 100], rules: [{ required: true, message: "请输入占比" }] },
+    ];
 
     /* 钩子函数 */
     componentDidMount() {
@@ -165,6 +167,7 @@ export class Main extends Component {
             this.setState({
                 modalsLoading: true
             });
+            console.log(values);
             setTimeout(() => {
                 message.success((create ? "新增" : "修改") + "操作成功!");
                 that.setState({
