@@ -207,7 +207,9 @@ export class Main extends Component {
                     <Divider type="vertical" />
                     <Button type="default" onClick={createOne}><Icon type="new-file" /> 新增</Button>
                 </Row>
-                <Table dataSource={lists} bordered={true} rowKey={"Id"} columns={columns} />
+                <div className="pc-tbct">
+                    <Table dataSource={lists} bordered={true} rowKey={"Id"} columns={columns} />
+                </div>
                 <Modals modal={modal} modalsLoading={modalsLoading} fieldsList={fieldsList} formItemLayout={formItemLayout} />
             </Spin>
         )
