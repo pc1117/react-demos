@@ -78,7 +78,8 @@ export class Main extends Component {
             renderValue: "Id",
             callback: (form, record) => {
                 console.log(form, record);
-            }
+            },
+            multipleSelection: true
         },
         rules: [{
             required: true,
@@ -90,7 +91,7 @@ export class Main extends Component {
     { name: "Sex", displayName: "性别", opts: [{ Id: 1, Name: "男" }, { Id: 2, Name: "女" }], editor: "radio", value: "", originValue: 2 },
     { name: "Nation", displayName: "民族", opts: [{ Id: 1, Name: "汉族" }, { Id: 2, Name: "少数民族" }], editor: "radio", value: "", originValue: 1, rules: [{ required: true, message: "请选择民族" }] },
     { name: "Phone", displayName: "手机", editor: "normal", value: "", originValue: "", rules: [{ required: false, message: "请输入手机" }] },
-    //{ name: "Percent", displayName: "占比", editor: "number", value: "", originValue: 1, range: [0, 100], rules: [{ required: true, message: "请输入占比" }] },
+        //{ name: "Percent", displayName: "占比", editor: "number", value: "", originValue: 1, range: [0, 100], rules: [{ required: true, message: "请输入占比" }] },
     ];
 
     /* 钩子函数 */

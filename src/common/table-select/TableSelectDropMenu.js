@@ -109,9 +109,10 @@ class TableSelectDropMenu extends Component {
 
     render() {
         const { item, closeDropMenu } = this.props;
-        const { columns, scroll = {} } = item.tableOption;
+        const { columns, scroll = {}, multipleSelection = false } = item.tableOption;
         const { loading, dataSource, searchValue, page } = this.state;
         const { searchOnChange, onRow, fetchData, onShowSizeChange, onChange } = this;
+        const rowSelection = multipleSelection ? [] : null;
         console.log("render has do");
         return (
             <div className="drop-menus">
@@ -130,7 +131,7 @@ class TableSelectDropMenu extends Component {
                                 onShowSizeChange: onShowSizeChange,
                                 onChange: onChange,
                                 showSizeChanger: true,
-                            }} >
+                            }} rowSelection={rowSelection} >
                         </Table>
                     </div>
                 </Spin>
