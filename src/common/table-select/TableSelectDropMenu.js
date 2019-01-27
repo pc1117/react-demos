@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Table, Input, Spin, Icon } from 'antd';
+import { Table, Input, Spin, Icon, Button } from 'antd';
 import http from './../../service/http';
 import './table-select.css';
 import { message } from 'antd';
@@ -12,6 +12,8 @@ class TableSelectDropMenu extends Component {
         loading: false,
         searchValue: "",
         dataSource: [],
+        selectedRowKeys: [],
+        selectedRecords: [],
         page: {
             size: "small",
             pageSize: 5,
@@ -76,14 +78,19 @@ class TableSelectDropMenu extends Component {
     }
 
     /* 表格行事件 */
-    onRow = (record) => {
-        const { tableOnChange, form, closeDropMenu } = this.props;
+    onRow = (record, index) => {
+        let { tableOnChange, form, closeDropMenu } = this.props;
         return {
             onClick: () => {
-                let { renderName, callback } = this.props.item.tableOption;
-                tableOnChange(record[renderName]);
-                closeDropMenu();
-                callback && callback(form, record);
+                let { renderName, callback, multipleSelection } = this.props.item.tableOption;
+                if (multipleSelection) {
+                    return;
+                } else {
+                    tableOnChange(record[renderName]);
+                    closeDropMenu();
+                    callback && callback(form, record);
+                }
+
             },
             onMouseEnter: () => { },
         };
@@ -107,13 +114,32 @@ class TableSelectDropMenu extends Component {
         this.fetchData(params);
     }
 
+    /*表格多选onChange事件*/
+    onSelectChange = (selectedRowKeys, selectedRecords) => {
+        this.setState({
+            selectedRowKeys, selectedRecords
+        });
+    }
+
+    /* 多选提交 */
+    multiSubmit = (selectedRowKeys, selectedRecords) => {
+        let { tableOnChange, form, closeDropMenu, item } = this.props;
+        let { renderName, callback } = item.tableOption;
+        let values = (selectedRecords.map((v, i) => v[renderName])).join(",");
+        values && tableOnChange(values);
+        closeDropMenu();
+        callback && callback(form, selectedRecords, selectedRowKeys);
+    }
+
     render() {
         const { item, closeDropMenu } = this.props;
         const { columns, scroll = {}, multipleSelection = false } = item.tableOption;
-        const { loading, dataSource, searchValue, page } = this.state;
-        const { searchOnChange, onRow, fetchData, onShowSizeChange, onChange } = this;
-        const rowSelection = multipleSelection ? [] : null;
-        console.log("render has do");
+        const { loading, dataSource, searchValue, page, selectedRowKeys, selectedRecords } = this.state;
+        const { searchOnChange, onRow, fetchData, onShowSizeChange, onChange, onSelectChange, multiSubmit } = this;
+        const rowSelection = multipleSelection ? {
+            selectedRowKeys,
+            onChange: onSelectChange
+        } : null;
         return (
             <div className="drop-menus">
                 <Spin spinning={loading}>
@@ -122,7 +148,8 @@ class TableSelectDropMenu extends Component {
                         <span className="ts-close" title="点击关闭" onClick={closeDropMenu}><Icon type="close" /></span>
                     </div>
                     <div className="ts-search">
-                        <Search value={searchValue} onSearch={fetchData} onChange={searchOnChange} placeholder="请输入关键字进行搜索" />
+                        {multipleSelection ? <Button className="ts-sl" size="small" type="primary" onClick={multiSubmit.bind(this, selectedRowKeys, selectedRecords)}>确定</Button> : ""}
+                        <Search className="ts-sr" value={searchValue} onSearch={fetchData} onChange={searchOnChange} placeholder="请输入关键字进行搜索" />
                     </div>
                     <div className="ts-container">
                         <Table scroll={scroll} columns={columns} dataSource={dataSource} rowKey="Id" size="small" bordered={true} onRow={onRow}

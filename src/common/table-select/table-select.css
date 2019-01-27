@@ -39,9 +39,25 @@
 }
 
 .ts-search {
-    text-align: right;
+    /*text-align: right; */
     padding: 5px 10px;
     margin: 0 -15px;
+}
+
+.ts-search::after {
+    display: table;
+    content: "";
+    clear: both;
+}
+
+.ts-search .ts-sl {
+    float: left;
+    height: 26px;
+}
+
+.ts-search .ts-sr {
+    float: right;
+    width: 200px;
 }
 
 .ts-search .ant-input {
