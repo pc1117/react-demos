@@ -9,6 +9,22 @@ const publics = {
     bindFormData(item = {}, fieldsList = []) {
         fieldsList.forEach((v, n) => v.value = item[v.name]);
     },
+    getFormData(fieldsList = []) {
+        let data = {};
+        fieldsList.forEach(v => {
+            switch (v.editor) {
+                case "file-upload":
+                    let { defaultFileList = [] } = v.fileUpLoadOption;
+                    console.log(defaultFileList);
+                    data[v.name] = v.value;
+                    break;
+                default:
+                    data[v.name] = v.value;
+                    break;
+            }
+        });
+        return data;
+    },
     /* 冒泡排序法 */
     sortBubbling(arr = []) {
         let count = 0;

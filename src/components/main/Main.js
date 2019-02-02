@@ -18,7 +18,13 @@ export class Main extends Component {
         cancelText: "取消",
         maskClosable: false,
         centered: true,
-        modalsLoading: false
+        modalsLoading: false,
+        defaultFileList: [{
+            uid: '-1',
+            name: 'xxx.png',
+            status: 'done',
+            url: 'http://www.baidu.com/xxx.png',
+        }]
     };
 
     /* 表单列 */
@@ -58,6 +64,37 @@ export class Main extends Component {
         )
     }];
 
+    /* 图片上传onChange */
+    handleChange = (info, form) => {
+        let fileList = info.fileList;
+        // 1. Limit the number of uploaded files
+        // Only to show two recent uploaded files, and old ones will be replaced by the new
+        fileList = fileList.slice(-2);
+        // 2. Read from response and show file link
+        fileList = fileList.map((file) => {
+            if (file.response) {
+                // Component will show file.url as link
+                file.url = file.response.Content[0].Url;
+            }
+            return file;
+        });
+        // 3. Filter successfully uploaded files according to response from server
+        fileList = fileList.filter((file) => {
+            if (file.response) {
+                return file.response.State.Message === 'success';
+            }
+            return false;
+        });
+        let _defaultFileList = this.state.defaultFileList;
+        this.setState({ defaultFileList: fileList });
+    }
+
+    /* 删除图片的回调 */
+    onRemove = (file) => {
+        this.setState({});
+        return true
+    }
+
     /* 表单项目列 */
     fieldsList = [{
         name: "City", displayName: "城市", editor: "table-select", value: "", originValue: "成都市",
@@ -91,8 +128,24 @@ export class Main extends Component {
     { name: "Sex", displayName: "性别", opts: [{ Id: 1, Name: "男" }, { Id: 2, Name: "女" }], editor: "radio", value: "", originValue: 2 },
     { name: "Nation", displayName: "民族", opts: [{ Id: 1, Name: "汉族" }, { Id: 2, Name: "少数民族" }], editor: "radio", value: "", originValue: 1, rules: [{ required: true, message: "请选择民族" }] },
     { name: "Phone", displayName: "手机", editor: "normal", value: "", originValue: "", rules: [{ required: false, message: "请输入手机" }] },
-        //{ name: "Percent", displayName: "占比", editor: "number", value: "", originValue: 1, range: [0, 100], rules: [{ required: true, message: "请输入占比" }] },
-    ];
+    {
+        name: "File",
+        displayName: "附件上传",
+        editor: "file-upload",
+        value: "",
+        originValue: 1,
+        fileUpLoadOption: {
+            headers: {
+                "Authorization": "Bearer VO-GS08faU6v25ft4bC_pdEQGx0EisZ2BOPu0LxdYtNg_HbWh9ioXJFZvsdAZKIinlh7ajnZDkpK6LJcTv6reTZfsNoweslVuFQTHygspAy33j1i-ZESeR2xRvbCo3JWPy0L7Quu-JZ_GoxQZk448uBrd4d7jUBRjoEuGq8QCNJITgFpg1AaKre0VozAqfD0v6CZb8xuC91VWQFKgU9w_wT984ZDZwqA_hgWy7_NNQEoDxbH"
+            },
+            onChange: this.handleChange,
+            action: 'http://101.201.114.116:20100/res/gw/res/media/mediafile/api/upload',
+            defaultFileList: [],
+            multiple: true
+        },
+        rules: [{ required: true, message: "请输入占比" }]
+    }];
+
 
     /* 钩子函数 */
     componentDidMount() {
@@ -158,13 +211,7 @@ export class Main extends Component {
         let { create } = this.state;
         $event.preventDefault();
         form.validateFields((errors, values) => {
-            let isNull = false;
-            for (let v in errors) {
-                if (errors[v].errors) {
-                    isNull = true;
-                }
-            }
-            if (isNull) return;
+            if (errors) return;
             this.setState({
                 modalsLoading: true
             });

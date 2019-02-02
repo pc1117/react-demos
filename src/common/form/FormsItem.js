@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Input, Select, Radio, Checkbox } from 'antd';
 import TableSelect from '../table-select/TableSelect';
 import { InputNumber } from 'antd';
+import FileUpLoad from './FileUpLoad';
 
 class FormsItem extends Component {
 
@@ -41,6 +42,8 @@ class FormsItem extends Component {
                     )
                 case "table-select":
                     return <TableSelect item={item} form={form} value={value} onChange={onChange} />
+                case "file-upload":
+                    return <FileUpLoad item={item} form={form} value={value} onChange={onChange} />
                 default:
                     return <Input value={value} onChange={onChange} />
             }
