@@ -64,37 +64,6 @@ export class Main extends Component {
         )
     }];
 
-    /* 图片上传onChange */
-    handleChange = (info, form) => {
-        let fileList = info.fileList;
-        // 1. Limit the number of uploaded files
-        // Only to show two recent uploaded files, and old ones will be replaced by the new
-        fileList = fileList.slice(-2);
-        // 2. Read from response and show file link
-        fileList = fileList.map((file) => {
-            if (file.response) {
-                // Component will show file.url as link
-                file.url = file.response.Content[0].Url;
-            }
-            return file;
-        });
-        // 3. Filter successfully uploaded files according to response from server
-        fileList = fileList.filter((file) => {
-            if (file.response) {
-                return file.response.State.Message === 'success';
-            }
-            return false;
-        });
-        let _defaultFileList = this.state.defaultFileList;
-        this.setState({ defaultFileList: fileList });
-    }
-
-    /* 删除图片的回调 */
-    onRemove = (file) => {
-        this.setState({});
-        return true
-    }
-
     /* 表单项目列 */
     fieldsList = [{
         name: "City", displayName: "城市", editor: "table-select", value: "", originValue: "成都市",
@@ -138,12 +107,19 @@ export class Main extends Component {
             headers: {
                 "Authorization": "Bearer VO-GS08faU6v25ft4bC_pdEQGx0EisZ2BOPu0LxdYtNg_HbWh9ioXJFZvsdAZKIinlh7ajnZDkpK6LJcTv6reTZfsNoweslVuFQTHygspAy33j1i-ZESeR2xRvbCo3JWPy0L7Quu-JZ_GoxQZk448uBrd4d7jUBRjoEuGq8QCNJITgFpg1AaKre0VozAqfD0v6CZb8xuC91VWQFKgU9w_wT984ZDZwqA_hgWy7_NNQEoDxbH"
             },
-            onChange: this.handleChange,
+            listType: "picture-card",
+            onChange: (info, form, onChange) => {
+                if (info.file.status === "done") {
+                    let fileList = info.fileList;
+                    let value = fileList.map(file => file.response.Content[0].Id).join(",");
+                    onChange(value);
+                }
+            },
             action: 'http://101.201.114.116:20100/res/gw/res/media/mediafile/api/upload',
             defaultFileList: [],
             multiple: true
         },
-        rules: [{ required: true, message: "请输入占比" }]
+        rules: [{ required: false, message: "请选择附件" }]
     }];
 
 
