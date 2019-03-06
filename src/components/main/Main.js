@@ -4,6 +4,7 @@ import './main.css';
 import Modals from '../../common/modal/Modals';
 import publics from './../../service/public';
 import http from '../../service/http';
+import { apiConfig } from './../../configs/api.config';
 
 export class Main extends Component {
 
@@ -29,31 +30,31 @@ export class Main extends Component {
 
 	/* 表单列 */
 	columns = [{
-		dataIndex: 'Name',
-		key: 'Name',
+		dataIndex: 'name',
+		key: 'name',
 		title: '姓名',
 	}, {
-		dataIndex: 'Sex',
-		key: 'Sex',
+		dataIndex: 'sex',
+		key: 'sex',
 		title: '性别',
 		render: (text) => text === 1 ? "男" : "女"
 	}, {
-		dataIndex: 'City',
-		key: 'City',
+		dataIndex: 'nativePlace',
+		key: 'nativePlace',
 		title: '城市',
 	}, {
-		dataIndex: 'Nation',
-		key: 'Nation',
+		dataIndex: 'nation',
+		key: 'nation',
 		title: '民族',
 		render: (text) => text === 1 ? "汉族" : "少数民族"
 	}, {
-		dataIndex: 'Unit',
-		key: 'Unit',
+		dataIndex: 'unit',
+		key: 'unit',
 		title: '楼栋单元',
 		render: (text) => text === 1 ? "一单元" : "二单元"
 	}, {
-		dataIndex: 'Action',
-		key: 'Action',
+		dataIndex: 'action',
+		key: 'action',
 		title: '操作',
 		render: (text, record, index) => (
 			<div>
@@ -92,10 +93,10 @@ export class Main extends Component {
 			message: "请选择城市"
 		}]
 	},
-	{ name: "Name", displayName: "姓名", editor: "normal", value: "", originValue: "赵星星", rules: [{ required: true, message: "请输入姓名" }] },
+	{ name: "name", displayName: "姓名", editor: "normal", value: "", originValue: "赵星星", rules: [{ required: true, message: "请输入姓名" }] },
 	{ name: "Unit", displayName: "楼栋单元", editor: "select", value: "", originValue: 1, opts: [{ Id: 1, Name: "一单元" }, { Id: 2, Name: "二单元" }] },
-	{ name: "Sex", displayName: "性别", opts: [{ Id: 1, Name: "男" }, { Id: 2, Name: "女" }], editor: "radio", value: "", originValue: 2 },
-	{ name: "Nation", displayName: "民族", opts: [{ Id: 1, Name: "汉族" }, { Id: 2, Name: "少数民族" }], editor: "radio", value: "", originValue: 1, rules: [{ required: true, message: "请选择民族" }] },
+	{ name: "sex", displayName: "性别", opts: [{ Id: 1, Name: "男" }, { Id: 2, Name: "女" }], editor: "radio", value: "", originValue: 2 },
+	{ name: "nation", displayName: "民族", opts: [{ Id: 1, Name: "汉族" }, { Id: 2, Name: "少数民族" }], editor: "radio", value: "", originValue: 1, rules: [{ required: true, message: "请选择民族" }] },
 	{ name: "Phone", displayName: "手机", editor: "normal", value: "", originValue: "", rules: [{ required: false, message: "请输入手机" }] },
 	{
 		name: "File",
@@ -158,27 +159,26 @@ export class Main extends Component {
 		let that = this;
 		this.setState({
 			loading: true
-		}, () => {
-			http.request({
-				method: "get",
-				url: "/api/courtyardlist",
-				params: {},
-			}).then(res => {
-				if (res.code === 0) {
-					let dataSource = res.data.pagelist;
-					that.setState({
-						loading: false,
-						lists: dataSource
-					});
-				} else {
-					message.error(res.message);
-					that.setState({ loading: false });
-				}
-			}).catch(err => {
-				message(err.message);
-				this.setState({ loading: false });
-			})
 		});
+		http.request({
+			method: "get",
+			url: apiConfig.residentManage.findAll,
+			params: {},
+		}).then(res => {
+			if (res.code === 200) {
+				let dataSource = res.data.rows;
+				that.setState({
+					loading: false,
+					lists: dataSource
+				});
+			} else {
+				message.error(res.message);
+				that.setState({ loading: false });
+			}
+		}).catch(err => {
+			message(err.message);
+			this.setState({ loading: false });
+		})
 	};
 
 	/* 弹框ok事件 */
@@ -232,7 +232,7 @@ export class Main extends Component {
 					<Button type="default" onClick={createOne}><Icon type="new-file" /> 新增</Button>
 				</Row>
 				<div className="pc-tbct">
-					<Table dataSource={lists} bordered={true} rowKey={"Id"} columns={columns} />
+					<Table dataSource={lists} bordered={true} rowKey={"id"} columns={columns} />
 				</div>
 				<Modals modal={modal} modalsLoading={modalsLoading} fieldsList={fieldsList} formItemLayout={formItemLayout} />
 			</Spin>

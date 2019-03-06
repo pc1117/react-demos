@@ -6,9 +6,9 @@ class HttpService {
     successHandle(res) {
         let data = res["data"];
         return {
-            data: data.Content,
-            message: data.State.Message,
-            code: data.State.Code
+            data: data.data,
+            message: data.message,
+            code: data.status
         }
     }
 
