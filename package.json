@@ -2,6 +2,7 @@
   "name": "my-app",
   "version": "0.1.0",
   "private": true,
+  "license": "ISC",
   "dependencies": {
     "antd": "^3.12.3",
     "axios": "^0.18.0",
