@@ -4,8 +4,8 @@ const serviceConfig = JSON.parse(localStorage.getItem('scmp-web'));
 const rewrite = {
     //项目代理路径【做前后端分离时，需要在Nginx中配置这个做为代理解决跨域，本地测试时，需要在package.json中配置proxy】
     //scmp:'scmp.api',
-    scmp: process.env.NODE_ENV !== 'production' ? '/scmp.api' : serviceConfig.scmpApi,
-    file: process.env.NODE_ENV !== 'production' ? '/file.api' : serviceConfig.ecmpFile,
+    scmp: process.env.NODE_ENV !== 'production' ? 'scmp.api' : serviceConfig.scmpApi,
+    file: process.env.NODE_ENV !== 'production' ? 'file.api' : serviceConfig.ecmpFile,
 
 };
 
